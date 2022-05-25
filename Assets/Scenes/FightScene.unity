@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 108877847}
   - component: {fileID: 108877846}
   m_Layer: 5
-  m_Name: Heart
+  m_Name: HeartIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1671,7 +1671,7 @@ GameObject:
   - component: {fileID: 887470273}
   - component: {fileID: 887470272}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: AttackIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

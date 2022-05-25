@@ -54,9 +54,14 @@ public class BattleStart : MonoBehaviour
         // Sets Max Health of Health Bar
         enemyHealthBar.SetMaxHealth(enemyMaxHealth);
         playerHealthBar.SetMaxHealth(playerMaxHealth);
-        
+        PlayerTurn();
     }
 
+    public void PlayerTurn()
+    {
+        GameObject.Find("Attack").GetComponent<Button>().interactable = true;
+        GameObject.Find("Defend").GetComponent<Button>().interactable = true;
+    }
 
     public void PlayerAttacks() // Player turn of Attack
     {
@@ -66,17 +71,16 @@ public class BattleStart : MonoBehaviour
             playerPower = 5 + varCheck.upgAtk;
             enemyPower = Random.Range(4, 6);
             playerAnimator.SetTrigger("playerAtk"); //Triggers Player Attack Animation
+            StartCoroutine(WaitForEnemyTurn());
             enemyHealth -= playerPower;
             enemyHealthBar.SetHealth(enemyHealth);
             enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
-            if (enemyHealth < 0)
+            actionText.text = "Player Attacked for " + playerPower;
+            if (enemyHealth <= 0)
             {
                 enemyHealth = 0;
             }
-            new WaitForSeconds(2);
-
             Debug.Log("Player Attacked for " + playerPower);
-            EnemyTurn();
         }
     }
     public void PlayerHeals() //Player turn of Healing
@@ -86,14 +90,15 @@ public class BattleStart : MonoBehaviour
             playerPower = 5 + varCheck.upgAtk;
             enemyPower = Random.Range(4, 6);
             playerAnimator.SetTrigger("playerHeal"); //Triggers Player Heal Animation
+            StartCoroutine(WaitForEnemyTurn());
             playerHealth += (5 + varCheck.upgHeal);
             if (playerHealth > playerMaxHealth)
             {
                 playerHealth = playerMaxHealth;
             }
             playerHealthBar.SetHealth(playerHealth);
+            actionText.text = "Player Healed for " + (5 + varCheck.upgHeal);
             playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
-            EnemyTurn();
         }
     }
 
@@ -105,6 +110,7 @@ public class BattleStart : MonoBehaviour
         {
             if(randVar == 1)
             {
+                enemyAnimator.SetTrigger("enemyAtk");
                 playerHealth -= enemyPower;
                 randVar = Random.Range(0, 2);
                 if (playerHealth < 0)
@@ -113,14 +119,17 @@ public class BattleStart : MonoBehaviour
                 }
                 playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
                 enemyAtking = true;
+                StartCoroutine(WaitForPlayerTurn());
                 Debug.Log("Enemy Attacked");
             }
             else
             {
+                enemyAnimator.SetTrigger("enemyHeal");
                 enemyHealth += 3;
                 randVar = Random.Range(0, 2);
                 enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
                 enemyAtking = false;
+                StartCoroutine(WaitForPlayerTurn());
                 Debug.Log("Enemy Healed");
             }
             enemyHealthBar.SetHealth(enemyHealth);
@@ -160,11 +169,12 @@ public class BattleStart : MonoBehaviour
         }
         else if (enemyHealth <= 0) // Win Condition
         {
+            enemyAnimator.SetTrigger("enemyDead");
             print("Game Won!");
             actionText.text = "Game Won";
             Debug.Log("Player Health: " + playerHealth);
-            SceneManager.LoadScene("Upgrades");
             this.enabled = false;
+            StartCoroutine(WaitForUpgradeLoad());
             varCheck.sceneNum++;
         }
         
@@ -173,10 +183,7 @@ public class BattleStart : MonoBehaviour
         {
             GameObject.Find("Defend").GetComponent<Button>().interactable = false;
         }
-        else
-        {
-            GameObject.Find("Defend").GetComponent<Button>().interactable = true;
-        }
+        
 
         if (playerHealth > playerMaxHealth)
         {
@@ -187,6 +194,27 @@ public class BattleStart : MonoBehaviour
         {
             randVar = 1;
         }
+    }
+
+    private IEnumerator WaitForUpgradeLoad()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Upgrades");
+
+    }
+
+    private IEnumerator WaitForPlayerTurn()
+    {
+        yield return new WaitForSeconds(2);
+        PlayerTurn();
+    }
+
+    private IEnumerator WaitForEnemyTurn()
+    {
+        GameObject.Find("Attack").GetComponent<Button>().interactable = false;
+        GameObject.Find("Defend").GetComponent<Button>().interactable = false;
+        yield return new WaitForSeconds(2);
+        EnemyTurn();
     }
 
 
