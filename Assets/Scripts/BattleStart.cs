@@ -23,6 +23,8 @@ public class BattleStart : MonoBehaviour
     public Text actionText;
     bool enemyAtking;
     private VariableCheck varCheck;
+    public Animator playerAnimator;
+    public Animator enemyAnimator;
 
 
     public void Start()
@@ -52,6 +54,7 @@ public class BattleStart : MonoBehaviour
         // Sets Max Health of Health Bar
         enemyHealthBar.SetMaxHealth(enemyMaxHealth);
         playerHealthBar.SetMaxHealth(playerMaxHealth);
+        
     }
 
 
@@ -62,6 +65,7 @@ public class BattleStart : MonoBehaviour
         {
             playerPower = 5 + varCheck.upgAtk;
             enemyPower = Random.Range(4, 6);
+            playerAnimator.SetTrigger("playerAtk"); //Triggers Player Attack Animation
             enemyHealth -= playerPower;
             enemyHealthBar.SetHealth(enemyHealth);
             enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
@@ -69,6 +73,8 @@ public class BattleStart : MonoBehaviour
             {
                 enemyHealth = 0;
             }
+            new WaitForSeconds(2);
+
             Debug.Log("Player Attacked for " + playerPower);
             EnemyTurn();
         }
@@ -79,6 +85,7 @@ public class BattleStart : MonoBehaviour
         {
             playerPower = 5 + varCheck.upgAtk;
             enemyPower = Random.Range(4, 6);
+            playerAnimator.SetTrigger("playerHeal"); //Triggers Player Heal Animation
             playerHealth += (5 + varCheck.upgHeal);
             if (playerHealth > playerMaxHealth)
             {
@@ -145,6 +152,7 @@ public class BattleStart : MonoBehaviour
 
         if (playerHealth <= 0) // Lose Condition
         {
+            playerAnimator.SetTrigger("playerDead");
             print("Game Lost!");
             actionText.text = "Game Lost";
             Debug.Log("Enemy Health: " + enemyHealth);

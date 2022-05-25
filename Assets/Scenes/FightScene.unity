@@ -574,6 +574,8 @@ MonoBehaviour:
   enemyHealthText: {fileID: 711362752}
   levelText: {fileID: 598171534}
   actionText: {fileID: 1577599319}
+  playerAnimator: {fileID: 1199175202}
+  enemyAnimator: {fileID: 969045398}
 --- !u!4 &218909808
 Transform:
   m_ObjectHideFlags: 0
