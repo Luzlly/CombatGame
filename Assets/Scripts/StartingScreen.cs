@@ -5,9 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class StartingScreen : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public void PlayGame()
+    private VariableCheck varCheck;
+
+    public void Start()
     {
+        varCheck = GameObject.Find("Variables").GetComponent<VariableCheck>(); //Establishes Connection with Variables Script
+    }
+
+        // Start is called before the first frame update
+        public void PlayGame()
+    {
+        varCheck.sceneNum = 1;
         SceneManager.LoadScene("FightScene");
     }
 
