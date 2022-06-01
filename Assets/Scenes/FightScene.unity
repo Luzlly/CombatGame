@@ -560,7 +560,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 218909806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 183417ed16d1a5949821de3b8ed905ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c98f65bb3edbb247a6a848239c46c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: 0
@@ -1176,7 +1176,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218909807}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BattleStart, Assembly-CSharp
         m_MethodName: PlayerHeals
         m_Mode: 1
@@ -2078,53 +2078,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1125668282}
   m_CullTransparentMesh: 1
---- !u!1 &1184919401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1184919403}
-  - component: {fileID: 1184919402}
-  m_Layer: 0
-  m_Name: Variables
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1184919402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184919401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d0d3d5f24514c4f9417bb2091c7d3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneNum: 0
-  upgMH: 0
-  upgHeal: 0
-  upgAtk: 0
---- !u!4 &1184919403
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184919401}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.3333774, y: -0.3710774, z: 110.16475}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1185478893
 GameObject:
   m_ObjectHideFlags: 0
@@ -3911,7 +3864,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 218909807}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BattleStart, Assembly-CSharp
         m_MethodName: PlayerAttacks
         m_Mode: 1
