@@ -13,23 +13,33 @@ public class BattleStart : MonoBehaviour
     int enemyPower;
     int playerPower;
     public int randVar;
+
     public GameObject healthIcon;
     public GameObject attackIcon;
+
     public HealthBar enemyHealthBar;
     public HealthBar playerHealthBar;
+
     public Text playerHealthText;
     public Text enemyHealthText;
     public Text levelText;
     public Text actionText;
-    bool enemyAtking;
+
     private VariableCheck varCheck;
+
     public Animator playerAnimator;
     public Animator enemyAnimator;
 
+    public AudioClip playerAtkSnd;
+    public AudioClip enemyAtkSnd;
+    public AudioClip deathSnd;
+    public AudioSource audioSource;
 
     public void Start()
     {
+        actionText.text = "";
         varCheck = GameObject.Find("Variables").GetComponent<VariableCheck>(); //Establishes Connection with Variables Script
+
         // Initialising Variables
         playerMaxHealth = 25 + varCheck.upgMH;
         if (varCheck.sceneNum == 5)
@@ -42,15 +52,16 @@ public class BattleStart : MonoBehaviour
         }
         playerHealth = playerMaxHealth;
         enemyHealth = enemyMaxHealth;
+
         // Enables the on-screen visuals
         levelText.text = "Level " + varCheck.sceneNum;
-        actionText.GetComponent<Text>().enabled = false;
-        enemyAtking = true;
+        actionText.GetComponent<Text>().enabled = true;
         attackIcon.SetActive(false);
         healthIcon.SetActive(false);
         randVar = Random.Range(0, 2);
         enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
         playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
+
         // Sets Max Health of Health Bar
         enemyHealthBar.SetMaxHealth(enemyMaxHealth);
         playerHealthBar.SetMaxHealth(playerMaxHealth);
@@ -73,13 +84,14 @@ public class BattleStart : MonoBehaviour
             playerAnimator.SetTrigger("playerAtk"); //Triggers Player Attack Animation
             StartCoroutine(WaitForEnemyTurn());
             enemyHealth -= playerPower;
+            actionText.text = "Player Attacked for " + playerPower;
             enemyHealthBar.SetHealth(enemyHealth);
             enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
-            actionText.text = "Player Attacked for " + playerPower;
             if (enemyHealth <= 0)
             {
                 enemyHealth = 0;
             }
+            audioSource.PlayOneShot(playerAtkSnd, 0.7F);
             Debug.Log("Player Attacked for " + playerPower);
         }
     }
@@ -92,12 +104,12 @@ public class BattleStart : MonoBehaviour
             playerAnimator.SetTrigger("playerHeal"); //Triggers Player Heal Animation
             StartCoroutine(WaitForEnemyTurn());
             playerHealth += (5 + varCheck.upgHeal);
+            actionText.text = "Player Healed for " + (5 + varCheck.upgHeal);
             if (playerHealth > playerMaxHealth)
             {
                 playerHealth = playerMaxHealth;
             }
             playerHealthBar.SetHealth(playerHealth);
-            actionText.text = "Player Healed for " + (5 + varCheck.upgHeal);
             playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
         }
     }
@@ -106,34 +118,22 @@ public class BattleStart : MonoBehaviour
     {
         actionText.GetComponent<Text>().enabled = true;
 
-        if (enemyHealth > 0) 
+        if (enemyHealth <= 10) 
         {
             if(randVar == 1)
             {
-                enemyAnimator.SetTrigger("enemyAtk");
-                playerHealth -= enemyPower;
-                randVar = Random.Range(0, 2);
-                if (playerHealth < 0)
-                {
-                    playerHealth = 0;
-                }
-                playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
-                enemyAtking = true;
-                StartCoroutine(WaitForPlayerTurn());
-                Debug.Log("Enemy Attacked");
+                EnemyAttacks();
             }
             else
             {
-                enemyAnimator.SetTrigger("enemyHeal");
-                enemyHealth += 3;
-                randVar = Random.Range(0, 2);
-                enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
-                enemyAtking = false;
-                StartCoroutine(WaitForPlayerTurn());
-                Debug.Log("Enemy Healed");
+                EnemyHeals();
             }
             enemyHealthBar.SetHealth(enemyHealth);
             playerHealthBar.SetHealth(playerHealth);
+        }
+        else
+        {
+            EnemyAttacks();
         }
     }
 
@@ -150,21 +150,13 @@ public class BattleStart : MonoBehaviour
             healthIcon.SetActive(true);
         }
 
-        if (enemyAtking == true) // Displays the last action of the enemy
-        {
-            actionText.text = "Enemy Attacked for " + enemyPower;
-        }
-        else
-        {
-            actionText.text = "Enemy Healed for 5";
-        }
-
         if (playerHealth <= 0) // Lose Condition
         {
             playerAnimator.SetTrigger("playerDead");
             print("Game Lost!");
             actionText.text = "Game Lost";
             Debug.Log("Enemy Health: " + enemyHealth);
+            audioSource.PlayOneShot(deathSnd, 0.7F);
             this.enabled = false;
         }
         else if (enemyHealth <= 0) // Win Condition
@@ -173,6 +165,7 @@ public class BattleStart : MonoBehaviour
             print("Game Won!");
             actionText.text = "Game Won";
             Debug.Log("Player Health: " + playerHealth);
+            audioSource.PlayOneShot(deathSnd, 0.7F);
             this.enabled = false;
             StartCoroutine(WaitForUpgradeLoad());
             varCheck.sceneNum++;
@@ -194,6 +187,33 @@ public class BattleStart : MonoBehaviour
         {
             randVar = 1;
         }
+    }
+
+    public void EnemyAttacks()
+    {
+        enemyAnimator.SetTrigger("enemyAtk");
+        playerHealth -= enemyPower;
+        randVar = Random.Range(0, 2);
+        if (playerHealth < 0)
+        {
+            playerHealth = 0;
+        }
+        playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
+        StartCoroutine(WaitForPlayerTurn());
+        actionText.text = "Enemy Attacked for " + enemyPower;
+        audioSource.PlayOneShot(enemyAtkSnd, 0.7F);
+        Debug.Log("Enemy Attacked");
+    }
+
+    public void EnemyHeals()
+    {
+        enemyAnimator.SetTrigger("enemyHeal");
+        enemyHealth += 5;
+        randVar = Random.Range(0, 2);
+        enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
+        StartCoroutine(WaitForPlayerTurn());
+        actionText.text = "Enemy Healed for 5";
+        Debug.Log("Enemy Healed");
     }
 
     private IEnumerator WaitForUpgradeLoad()
