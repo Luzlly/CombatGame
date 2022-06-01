@@ -58,7 +58,7 @@ public class BattleStart : MonoBehaviour
         actionText.GetComponent<Text>().enabled = true;
         attackIcon.SetActive(false);
         healthIcon.SetActive(false);
-        randVar = Random.Range(0, 2);
+        randVar = Random.Range(1, 6);
         enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
         playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
 
@@ -120,7 +120,7 @@ public class BattleStart : MonoBehaviour
 
         if (enemyHealth <= 10) 
         {
-            if(randVar == 1)
+            if(randVar >= 4)
             {
                 EnemyAttacks();
             }
@@ -139,7 +139,7 @@ public class BattleStart : MonoBehaviour
 
     public void Update() //Constantly Checking
     {
-        if (randVar == 1) //Changes enemy icon, depending on what their next move is
+        if (randVar >= 4) //Changes enemy icon, depending on what their next move is
         {
             attackIcon.SetActive(true);
             healthIcon.SetActive(false);
