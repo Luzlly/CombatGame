@@ -10,9 +10,10 @@ public class BattleStart : MonoBehaviour
     int playerMaxHealth;
     public int enemyHealth;
     int enemyMaxHealth;
-    int enemyPower;
     int playerPower;
     public int randVar;
+
+    public bool enemyAtking;
 
     public GameObject healthIcon;
     public GameObject attackIcon;
@@ -42,13 +43,13 @@ public class BattleStart : MonoBehaviour
 
         // Initialising Variables
         playerMaxHealth = 25 + varCheck.upgMH;
-        if (varCheck.sceneNum == 5)
+        if (varCheck.sceneNum % 5 == 0)
         {
-            enemyMaxHealth = 40;
+            enemyMaxHealth = (int)(1.5 * varCheck.enemyMaxHP);
         }
         else
         {
-            enemyMaxHealth = 20;
+            enemyMaxHealth = varCheck.enemyMaxHP;
         }
         playerHealth = playerMaxHealth;
         enemyHealth = enemyMaxHealth;
@@ -58,7 +59,6 @@ public class BattleStart : MonoBehaviour
         actionText.GetComponent<Text>().enabled = true;
         attackIcon.SetActive(false);
         healthIcon.SetActive(false);
-        randVar = Random.Range(1, 6);
         enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
         playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
 
@@ -70,6 +70,7 @@ public class BattleStart : MonoBehaviour
 
     public void PlayerTurn()
     {
+        randVar = Random.Range(1, 6);
         GameObject.Find("Attack").GetComponent<Button>().interactable = true;
         GameObject.Find("Defend").GetComponent<Button>().interactable = true;
     }
@@ -80,7 +81,6 @@ public class BattleStart : MonoBehaviour
         if (playerHealth > 0)
         {
             playerPower = 5 + varCheck.upgAtk;
-            enemyPower = Random.Range(4, 6);
             playerAnimator.SetTrigger("playerAtk"); //Triggers Player Attack Animation
             StartCoroutine(WaitForEnemyTurn());
             enemyHealth -= playerPower;
@@ -100,7 +100,6 @@ public class BattleStart : MonoBehaviour
         if (playerHealth > 0)
         {
             playerPower = 5 + varCheck.upgAtk;
-            enemyPower = Random.Range(4, 6);
             playerAnimator.SetTrigger("playerHeal"); //Triggers Player Heal Animation
             StartCoroutine(WaitForEnemyTurn());
             playerHealth += (5 + varCheck.upgHeal);
@@ -118,36 +117,47 @@ public class BattleStart : MonoBehaviour
     {
         actionText.GetComponent<Text>().enabled = true;
 
-        if (enemyHealth <= 10) 
+        /*if (enemyHealth <= 10 && randVar <= 4) 
         {
-            if(randVar >= 4)
+            if(randVar <= 4)
             {
-                EnemyAttacks();
+                
             }
             else
             {
                 EnemyHeals();
             }
-            enemyHealthBar.SetHealth(enemyHealth);
-            playerHealthBar.SetHealth(playerHealth);
         }
         else
         {
             EnemyAttacks();
+        }*/
+        if (enemyAtking == true)
+        {
+            EnemyAttacks();
         }
+        else if (enemyAtking == false)
+        {
+            EnemyHeals();
+        }
+
+        enemyHealthBar.SetHealth(enemyHealth);
+        playerHealthBar.SetHealth(playerHealth);
     }
 
     public void Update() //Constantly Checking
     {
-        if (randVar >= 4) //Changes enemy icon, depending on what their next move is
-        {
-            attackIcon.SetActive(true);
-            healthIcon.SetActive(false);
-        }
-        else
+        if (randVar < 4 && enemyHealth <= 10) //Changes enemy icon, depending on what their next move is
         {
             attackIcon.SetActive(false);
             healthIcon.SetActive(true);
+            enemyAtking = false;
+        }
+        else
+        {
+            attackIcon.SetActive(true);
+            healthIcon.SetActive(false);
+            enemyAtking = true;
         }
 
         if (playerHealth <= 0) // Lose Condition
@@ -162,12 +172,20 @@ public class BattleStart : MonoBehaviour
         else if (enemyHealth <= 0) // Win Condition
         {
             enemyAnimator.SetTrigger("enemyDead");
-            print("Game Won!");
-            actionText.text = "Game Won";
+            print("Fight Won!");
+            actionText.text = "Fight Won";
             Debug.Log("Player Health: " + playerHealth);
             audioSource.PlayOneShot(deathSnd, 0.7F);
             this.enabled = false;
             StartCoroutine(WaitForUpgradeLoad());
+            if (varCheck.sceneNum % 2 == 0)
+            {
+                varCheck.enemyMaxHP += 5;
+            }
+            if (varCheck.sceneNum % 4 == 0)
+            {
+                varCheck.enemyAtk += 2;
+            }
             varCheck.sceneNum++;
         }
         
@@ -192,15 +210,14 @@ public class BattleStart : MonoBehaviour
     public void EnemyAttacks()
     {
         enemyAnimator.SetTrigger("enemyAtk");
-        playerHealth -= enemyPower;
-        randVar = Random.Range(0, 2);
+        playerHealth -= varCheck.enemyAtk;
         if (playerHealth < 0)
         {
             playerHealth = 0;
         }
         playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
         StartCoroutine(WaitForPlayerTurn());
-        actionText.text = "Enemy Attacked for " + enemyPower;
+        actionText.text = "Enemy Attacked for " + varCheck.enemyAtk.ToString();
         audioSource.PlayOneShot(enemyAtkSnd, 0.7F);
         Debug.Log("Enemy Attacked");
     }
@@ -209,7 +226,6 @@ public class BattleStart : MonoBehaviour
     {
         enemyAnimator.SetTrigger("enemyHeal");
         enemyHealth += 5;
-        randVar = Random.Range(0, 2);
         enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
         StartCoroutine(WaitForPlayerTurn());
         actionText.text = "Enemy Healed for 5";
@@ -218,14 +234,14 @@ public class BattleStart : MonoBehaviour
 
     private IEnumerator WaitForUpgradeLoad()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Upgrades");
 
     }
 
     private IEnumerator WaitForPlayerTurn()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         PlayerTurn();
     }
 
@@ -233,7 +249,7 @@ public class BattleStart : MonoBehaviour
     {
         GameObject.Find("Attack").GetComponent<Button>().interactable = false;
         GameObject.Find("Defend").GetComponent<Button>().interactable = false;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         EnemyTurn();
     }
 
