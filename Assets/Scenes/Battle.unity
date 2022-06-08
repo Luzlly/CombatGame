@@ -864,7 +864,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0e2da243c8c662246a0a2757ca916f1b, type: 3}
-    m_FontSize: 100
+    m_FontSize: 72
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -1892,7 +1892,7 @@ RectTransform:
   m_GameObject: {fileID: 981972807}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8336514, y: 0.8336514, z: 0.8336514}
   m_Children:
   - {fileID: 1293953517}
   - {fileID: 460773709}
@@ -1904,7 +1904,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 694.92224, y: -263.5}
+  m_AnchoredPosition: {x: 593.67224, y: -229.75}
   m_SizeDelta: {x: 500, y: 281}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &981972809
@@ -2895,7 +2895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -3604,7 +3604,7 @@ RectTransform:
   m_GameObject: {fileID: 1831092897}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9324364, y: 0.9324364, z: 0.9324364}
+  m_LocalScale: {x: 0.8974048, y: 0.8974048, z: 0.8974048}
   m_Children:
   - {fileID: 171676672}
   - {fileID: 1189142000}
@@ -3613,7 +3613,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -48, y: -4}
+  m_AnchoredPosition: {x: -48, y: -34}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1831092899
@@ -3924,7 +3924,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 0e2da243c8c662246a0a2757ca916f1b, type: 3}
-    m_FontSize: 100
+    m_FontSize: 72
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -4045,7 +4045,7 @@ RectTransform:
   m_GameObject: {fileID: 2091508068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.81686, y: 0.81686, z: 0.81686}
   m_Children:
   - {fileID: 1199175201}
   - {fileID: 969045397}

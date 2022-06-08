@@ -89,6 +89,19 @@ public class BattleStart : MonoBehaviour
             GameObject.Find("Defend").GetComponent<Button>().interactable = true;
             GameObject.Find("Attack").GetComponent<Button>().interactable = true;
         }
+        
+        if (randVar <= 4 && enemyHealth <= (int)(.25 * enemyMaxHealth) && enemyMana != 0) //Changes enemy icon, depending on what their next move is
+        {
+            iconAttack.SetActive(false);
+            iconHealth.SetActive(true);
+            enemyAtking = false;
+        }
+        else
+        {
+            iconAttack.SetActive(true);
+            iconHealth.SetActive(false);
+            enemyAtking = true;
+        }
     }
 
     public void PlayerAttacks() // Player turn of Attack
@@ -131,7 +144,7 @@ public class BattleStart : MonoBehaviour
         }
     }
 
-    public void EnemyTurn() //Enemy Turn
+    public void EnemyTurn() //Enemy Turn Deciding
     {
         actionText.GetComponent<Text>().enabled = true;
 
@@ -172,22 +185,6 @@ public class BattleStart : MonoBehaviour
         enemyMana -= 1;
         actionText.text = "Enemy Healed for 5";
         Debug.Log("Enemy Healed");
-    }
-
-    public void EnemyEnd()
-    {
-        if (randVar <= 4 && enemyHealth <= (int)(.25 * enemyMaxHealth) && enemyMana != 0) //Changes enemy icon, depending on what their next move is
-        {
-            iconAttack.SetActive(false);
-            iconHealth.SetActive(true);
-            enemyAtking = false;
-        }
-        else
-        {
-            iconAttack.SetActive(true);
-            iconHealth.SetActive(false);
-            enemyAtking = true;
-        }
     }
 
     public void Update() //Constantly Checking
@@ -259,7 +256,6 @@ public class BattleStart : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         PlayerTurn();
-        EnemyEnd();
     }
 
     private IEnumerator WaitForEnemyTurn()
