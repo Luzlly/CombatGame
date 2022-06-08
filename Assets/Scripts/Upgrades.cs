@@ -19,23 +19,23 @@ public class Upgrades : MonoBehaviour
     public void MaxHealth()
     {
         varCheck.upgMH += 5;
-        SceneManager.LoadScene("FightScene");
+        SceneManager.LoadScene("Battle");
         Debug.Log("Loaded Scene: " + varCheck.sceneNum);
     }
 
     public void Healing()
     {
-        varCheck.upgHeal += 3;
-        SceneManager.LoadScene("FightScene");
-        Debug.Log("Loaded Scene: " + varCheck.sceneNum);
+        varCheck.upgHeal += 5;
+        SceneManager.LoadScene("Battle");
     }
 
     public void Attack()
     {
         varCheck.upgAtk += 2;
-        SceneManager.LoadScene("FightScene");
-        Debug.Log("Loaded Scene: " + varCheck.sceneNum);
+        Debug.Log("Increased Atk by 2, It is now" + varCheck.upgAtk);
+        SceneManager.LoadScene("Battle");
     }
+
 
     public void HoverAtk()
     {
@@ -49,11 +49,11 @@ public class Upgrades : MonoBehaviour
 
     public void HoverHealing()
     {
-        bottomText.text = "Increases Healing Potency by 3";
+        bottomText.text = "Increases Healing Potency by 5";
     }
 
     public void HoverExit()
     {
-        bottomText.text = "";
+        bottomText.text = "You Won!!" + "\nChoose your Upgrade!";
     }
 }

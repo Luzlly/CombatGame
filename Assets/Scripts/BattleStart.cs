@@ -15,8 +15,8 @@ public class BattleStart : MonoBehaviour
 
     public bool enemyAtking;
 
-    public GameObject healthIcon;
-    public GameObject attackIcon;
+    public GameObject iconHealth;
+    public GameObject iconAttack;
 
     public HealthBar enemyHealthBar;
     public HealthBar playerHealthBar;
@@ -57,8 +57,8 @@ public class BattleStart : MonoBehaviour
         // Enables the on-screen visuals
         levelText.text = "Level " + varCheck.sceneNum;
         actionText.GetComponent<Text>().enabled = true;
-        attackIcon.SetActive(false);
-        healthIcon.SetActive(false);
+        iconAttack.SetActive(false);
+        iconHealth.SetActive(false);
         enemyHealthText.text = enemyHealth.ToString() + "/" + enemyMaxHealth.ToString();
         playerHealthText.text = playerHealth.ToString() + "/" + playerMaxHealth.ToString();
 
@@ -149,14 +149,14 @@ public class BattleStart : MonoBehaviour
     {
         if (randVar < 4 && enemyHealth <= 10) //Changes enemy icon, depending on what their next move is
         {
-            attackIcon.SetActive(false);
-            healthIcon.SetActive(true);
+            iconAttack.SetActive(false);
+            iconHealth.SetActive(true);
             enemyAtking = false;
         }
         else
         {
-            attackIcon.SetActive(true);
-            healthIcon.SetActive(false);
+            iconAttack.SetActive(true);
+            iconHealth.SetActive(false);
             enemyAtking = true;
         }
 
