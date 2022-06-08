@@ -36,6 +36,11 @@ public class VariableCheck : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("FightScene");
+        SceneManager.LoadScene("Battle");
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
